@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.paris.agreement.models";
+
+message DisplayStatisticResponse
+{
+  repeated DisplayStatistic displayStatistics = 1;
+}
+
+message DisplayStatistic
+{
+  string word = 1;
+  string average_word_length = 2;
+  string average_sentence_length = 3;
+  string number_of_occurrences = 4;
+}
+
+message DisplayStatisticRequest
+{
+  string message = 1;
+}
+
+service DisplayStatisticService
+{
+  rpc displayStatistic(DisplayStatisticRequest) returns(DisplayStatisticResponse);
+}
+

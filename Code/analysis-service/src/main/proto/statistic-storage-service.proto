@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.paris.agreement.models";
+
+message StatisticStorageRequest
+{
+  repeated StatisticStorage statisticStorages = 1;
+}
+
+message StatisticStorage
+{
+  string word = 1;
+  string average_word_length = 2;
+  string average_sentence_length = 3;
+  string number_of_occurrences = 4;
+}
+
+message StatisticStorageResponse
+{
+  string message = 1;
+}
+
+service StatisticStorageService
+{
+  rpc storeStatistic(StatisticStorageRequest) returns(StatisticStorageResponse);
+}
+

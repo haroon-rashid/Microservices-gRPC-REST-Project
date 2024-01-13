@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>PARIS_AGREEMENT Text Analysis</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 style="text-align: center;">Paris Agreement Text Analysis</h1>
+</div>
+
+
+<div class="container-fluid">
+    <div class="container">
+    <table class="table" style="text-align: center;">
+        <thead class="thead text-white">
+        <tr class="row" style="background-color: rgb(69, 74, 88);">
+            <th class="col-md-1">Word</th>
+            <th class="col-md-2">Average Word Length</th>
+            <th class="col-md-2">Average Sentence Length</th>
+            <th class="col-md-3">Number Of Occurrences</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="row" th:each="data : ${statisticData}">
+            <td class="col-md-2" th:text="${data.word}">Test</td>
+            <td class="col-md-1" th:text="${data.averageWordLength}">Test</td>
+            <td class="col-md-2" th:text="${data.averageSentenceLength}">Test</td>
+            <td class="col-md-2" th:text="${data.numberOfOccurrences}">Test</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+</html>

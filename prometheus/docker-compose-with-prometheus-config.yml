@@ -1,0 +1,96 @@
+version: '3.7'
+
+services:
+
+  redis-server:
+    hostname: redis
+    image: 'redis'
+    ports:
+      - "6379:6379"
+    networks:
+      - microservices-network
+      
+  prometheus:
+    ports:
+    - "9090:9090"
+    volumes:
+     - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    command:
+     - '--config.file=/etc/prometheus/prometheus.yml'
+    image: prom/prometheus
+	networks:
+      - microservices-network
+	
+  display-statistic-service:
+    image: karlowther97/display-statistic-service:0.0.1-SNAPSHOT
+    hostname: display-statistic-service
+    container_name: display-statistic-service
+    ports:
+      - "8083:8083"
+    restart: always
+    depends_on: # Start the depends_on first
+      - redis-server
+
+    networks:
+       - microservices-network
+      
+      
+  analysis-service:
+    image: karlowther97/analysis-service:0.0.1-SNAPSHOT
+    hostname: analysis-service
+    container_name: analysis-service
+    ports:
+       - "8081:8081"
+       - "9095:9095"
+    restart: always
+    depends_on: # Start the depends_on first
+        - redis-server
+        - statistics-storage-service
+    environment:
+        WORD_CHOICE_1: test1
+        WORD_CHOICE_2: test2
+    
+    networks:
+        - microservices-network
+      
+  file-reader-service:
+    image: karlowther97/file-reader-service:0.0.1-SNAPSHOT
+    hostname: file-reader-service
+    container_name: file-reader-service
+    ports:
+       - "8082:8082"
+    restart: always
+    depends_on: # Start the depends_on first
+        - redis-server
+        - analysis-service
+        - display-statistic-service
+        - statistics-storage-service
+        
+    environment:
+        FILE_COMPLETE_PATH: /var/lib/data/PARIS_AGREEMENT.txt
+        
+    volumes: 
+      - ./DDM/:/var/lib/data/
+    
+    networks:
+        - microservices-network
+      
+      
+      
+  statistics-storage-service:
+    image: karlowther97/statistics-storage-service:0.0.1-SNAPSHOT
+    hostname: statistics-storage-service
+    container_name: statistics-storage-service
+    ports:
+       - "8080:8080"
+       - "9096:9096"
+    restart: always
+    depends_on: # Start the depends_on first
+       - redis-server
+      
+    networks:
+       - microservices-network
+  
+networks:
+  microservices-network:
+ 
